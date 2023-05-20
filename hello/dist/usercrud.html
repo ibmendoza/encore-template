@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">User Management</h1>
+      <form id="userForm" action="" method="POST">
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control">
+            <input class="input" type="text" name="username" placeholder="Enter username" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" name="password" placeholder="Enter password" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="radio">
+              <input type="radio" name="action" value="add" checked>
+              Add
+            </label>
+            <label class="radio">
+              <input type="radio" name="action" value="update">
+              Update
+            </label>
+            <label class="radio">
+              <input type="radio" name="action" value="delete">
+              Delete
+            </label>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-primary" type="submit">Submit</button>
+          </div>
+          <div class="control">
+            <button class="button is-link" type="reset">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('userForm');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const action = formData.get('action');
+      const username = formData.get('username');
+      const password = formData.get('password');
+
+      let endpoint = '';
+
+      if (action === 'add') {
+        endpoint = '/adduser';
+      } else if (action === 'update') {
+        endpoint = '/update';
+      } else if (action === 'delete') {
+        endpoint = '/delete';
+      }
+
+      // Perform your AJAX request here
+      // For simplicity, this example uses the Fetch API
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          // Handle the response or redirect the user to another page
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle any errors that occurred during the request
+        });
+    });
+    
+    
+  </script>
+</body>
+
+</html>
